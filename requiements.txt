@@ -1,0 +1,11 @@
+###### Requirements without Version Specifiers ######`
+tensorflow-gpu
+keras
+jupyter
+numpy
+matplotlib
+pandas
+pillow
+
+###### Requirements with Version Specifiers ######`
+graphviz==2.38
