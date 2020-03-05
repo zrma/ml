@@ -1,30 +1,9 @@
-from os import path
-
 import tensorflow as tf
 import tensorflow_datasets as tf_ds
-from keras.preprocessing.image import ImageDataGenerator, img_to_array, load_img
 from tensorflow.python.client import device_lib
 from tensorflow.python.platform import build_info as tf_build_info
 
-
-# noinspection SpellCheckingInspection
-def info():
-    print("tf version", tf.version.VERSION)
-    print("cuda version", tf_build_info.cuda_version_number)
-    print("cudnn version", tf_build_info.cudnn_version_number)
-    print(device_lib.list_local_devices())
-
-
-def hello_world():
-    w = tf.Variable(tf.ones(shape=(2, 2)), name="w")
-    b = tf.Variable(tf.zeros(shape=2), name="b")
-
-    @tf.function
-    def forward(x):
-        return w * x + b
-
-    out_a = forward([1, 0])
-    print(out_a)
+from src.hello_world import hello_world
 
 
 def tf_layers_model():
@@ -111,6 +90,7 @@ STEPS_PER_EPOCH = 5
 
 
 def train():
+    # noinspection SpellCheckingInspection
     data_sets, information = tf_ds.load(name='mnist', with_info=True, as_supervised=True)
     # noinspection SpellCheckingInspection
     mnist_train, mnist_test = data_sets['train'], data_sets['test']
@@ -136,37 +116,12 @@ def train():
     print(label_batch)
 
 
-def run():
-    data_generator = ImageDataGenerator(
-        rotation_range=40,
-        width_shift_range=0.2,
-        height_shift_range=0.2,
-        rescale=1. / 255,
-        shear_range=0.2,
-        zoom_range=0.2,
-        horizontal_flip=True,
-        fill_mode="nearest")
-
-    dir_path = path.dirname(path.realpath(__file__))
-    file_name = "cat.0.jpg"
-    file_path = path.join(dir_path, "data", "train", "cats", file_name)
-    target_path = path.join(dir_path, "data", "preview", "cats")
-
-    img = load_img(file_path)
-    x = img_to_array(img)
-    x = x.reshape((1,) + x.shape)
-
-    # 아래 .flow() 함수는 임의 변환된 이미지를 배치 단위로 생성해서
-    # 지정된 target_path 폴더에 저장합니다.
-    i = 0
-    for batch in data_generator.flow(x,
-                                     batch_size=1,
-                                     save_to_dir=target_path,
-                                     save_prefix="cat",
-                                     save_format="jpeg"):
-        i += 1
-        if i > 20:
-            break  # 이미지 20장을 생성하고 종료
+# noinspection SpellCheckingInspection
+def info():
+    print("tf version", tf.version.VERSION)
+    print("cuda version", tf_build_info.cuda_version_number)
+    print("cudnn version", tf_build_info.cudnn_version_number)
+    print(device_lib.list_local_devices())
 
 
 if __name__ == "__main__":
