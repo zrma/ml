@@ -3,7 +3,7 @@ from os import path
 from keras.preprocessing.image import ImageDataGenerator, load_img, img_to_array
 
 
-def run():
+def gen_image():
     data_generator = ImageDataGenerator(
         rotation_range=40,
         width_shift_range=0.2,
